@@ -90,7 +90,7 @@ class Insta(object):
 
             # 代码修改处
             cookies = self.extract_cookies(
-                cookie="mid=YdkfTgALAAEkbmcPqBufmiKyV3D5; ig_did=734B6C43-E743-461E-AEEF-6A635AD5BAAB; ig_nrcb=1; datr=uDgKY0maEvUCH6O4VjE1-JLp; csrftoken=AChKcT1cFCePhygWaZKlIG10FOfRFd8A; ds_user_id=50932469833; shbid=5886\05450932469833\0541695640111:01f7f0b84f4be8d39b54c3b48f855b552fcfb1a01e7c5fc4f5fbb49973aee454aa69c42a; shbts=1664104111\05450932469833\0541695640111:01f79238102d2d42b24ad4408478876b24154b4988c111dabe8748ceb6bfdc9d63e47bc7; sessionid=50932469833%3AQWOHIbc9E2oCz5%3A6%3AAYcWck8gvNNdWFPkcnG5eQkkTnxxy0D4b98JykF5mg; dpr=1.25; ig_lang=en; rur=NAO\05450932469833\0541695742589:01f72e8b338134d3aed5116c2dd676e012d137b8e71df887f9d20e9ea1684f7b51bdf8a7; mp_7ccb86f5c2939026a4b5de83b5971ed9_mixpanel=%7B%22distinct_id%22%3A%20%221837a74b0975cd-0a23d81b26b53f-26021c51-240000-1837a74b0987e8%22%2C%22%24device_id%22%3A%20%221837a74b0975cd-0a23d81b26b53f-26021c51-240000-1837a74b0987e8%22%2C%22site_type%22%3A%20%22similarweb%20extension%22%2C%22%24initial_referrer%22%3A%20%22https%3A%2F%2Fwww.instagram.com%2Faccounts%2Fedit%2F%22%2C%22%24initial_referring_domain%22%3A%20%22www.instagram.com%22%7D")
+                cookie="")
             # 代码结束
 
             year = localtime().tm_year + 1
@@ -311,12 +311,17 @@ class Insta(object):
 
         self.__random_sleep__(10, 10)
 
-        fans = self.driver.find_element_by_xpath(
-            self.selectors['fans_num']).get_attribute("title")
+        try:
+            fans = self.driver.find_element_by_xpath(
+                self.selectors['fans_num']).get_attribute("title")
 
-        desc = self.driver.find_element_by_xpath(
-            self.selectors['desc']).get_attribute("textContent")
+            desc = self.driver.find_element_by_xpath(
+                self.selectors['desc']).get_attribute("textContent")
 
-        self.data.append([username, fans, desc])
+            self.data.append([username, fans, desc])
 
-        print("get userinfo finish|username: " + username)
+            print("get userinfo finish|username: " + username)
+
+        except Exception as e:
+            print("get userinfo err|account is private|username: " + username + "|err info:" + str(e))
+            return
